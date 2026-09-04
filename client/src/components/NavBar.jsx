@@ -1,8 +1,26 @@
-import { AppBar, Toolbar, Typography, Button, Stack, Chip, IconButton, Tooltip, Divider } from '@mui/material';
+import { useState } from 'react';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Stack,
+  Chip,
+  IconButton,
+  Tooltip,
+  Divider,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
-import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
+import FactCheckRoundedIcon from '@mui/icons-material/FactCheckRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import HowToRegRoundedIcon from '@mui/icons-material/HowToRegRounded';
+import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import { useAuth } from '../context/AuthContext.jsx';
 
 function NavLink({ to, children }) {
@@ -24,6 +42,39 @@ function NavLink({ to, children }) {
     >
       {children}
     </Button>
+  );
+}
+
+function LoginMenu() {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  return (
+    <>
+      <Button
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        endIcon={<KeyboardArrowDownRoundedIcon />}
+        sx={{
+          color: '#fff',
+          px: 2,
+          borderRadius: 2,
+          fontWeight: 500,
+          '&:hover': { bgcolor: 'rgba(255,255,255,0.12)' },
+        }}
+      >
+        Login
+      </Button>
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
+        <MenuItem component={RouterLink} to="/login" onClick={() => setAnchorEl(null)}>
+          <ListItemIcon><HowToRegRoundedIcon fontSize="small" /></ListItemIcon>
+          <ListItemText primary="Customer Login" secondary="Submit an application" />
+        </MenuItem>
+        <MenuItem component={RouterLink} to="/admin/login" onClick={() => setAnchorEl(null)}>
+          <ListItemIcon><AdminPanelSettingsRoundedIcon fontSize="small" /></ListItemIcon>
+          <ListItemText primary="Admin Login" secondary="Manage submissions" />
+        </MenuItem>
+      </Menu>
+    </>
   );
 }
 
@@ -54,17 +105,16 @@ export default function NavBar() {
           to="/"
           sx={{ color: 'inherit', textDecoration: 'none' }}
         >
-          <DescriptionRoundedIcon />
+          <FactCheckRoundedIcon />
           <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 0.3 }}>
-            Evotec Assignment
+            CFAMS
           </Typography>
         </Stack>
 
         <Stack direction="row" spacing={1} alignItems="center">
           {!user && (
             <>
-              <NavLink to="/login">Customer Login</NavLink>
-              <NavLink to="/admin/login">Admin Login</NavLink>
+              <LoginMenu />
               <Button
                 component={RouterLink}
                 to="/register"
