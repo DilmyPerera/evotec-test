@@ -1,14 +1,15 @@
-# Evotec Full-Stack Technical Assignment
-
-A full-stack web application with customer/admin authentication, role-based
-access control, and a CRUD form-submission system with filtering and search.
+# Customer Application Management System (CAMS)
 
 ## Project Description
 
-Customers can register, log in, and submit a personal-details form. Admins
-log in separately and manage all submitted forms from a dashboard — viewing,
-editing, deleting, filtering by gender, and searching by name. Access to
-every route is enforced by JWT-based authentication and role guards.
+A full-stack web application designed to manage customer registrations,
+application submissions, and administrative operations through a secure
+role-based system. Customers can register, authenticate, and submit
+application forms, while administrators can securely manage, search, filter,
+update, and delete submissions through an administrative dashboard. The
+system implements JWT-based authentication, role-based authorization,
+server-side validation, secure password hashing, and PostgreSQL database
+management.
 
 ## Tech Stack
 
