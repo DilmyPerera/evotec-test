@@ -9,6 +9,7 @@ import {
   Stack,
   MenuItem,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
 
 const EMPTY_FORM = {
@@ -22,10 +23,10 @@ const EMPTY_FORM = {
 };
 
 export default function ApplicationPage() {
+  const navigate = useNavigate();
   const [form, setForm] = useState(EMPTY_FORM);
   const [fieldErrors, setFieldErrors] = useState({});
   const [formError, setFormError] = useState('');
-  const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (field) => (e) => {
@@ -36,15 +37,13 @@ export default function ApplicationPage() {
     e.preventDefault();
     setFormError('');
     setFieldErrors({});
-    setSuccess(false);
     setSubmitting(true);
     try {
       const payload = { ...form };
       if (!payload.feedback) delete payload.feedback;
 
       await axiosClient.post('/submissions', payload);
-      setSuccess(true);
-      setForm(EMPTY_FORM);
+      navigate('/application/success');
     } catch (err) {
       const data = err.response?.data;
       if (data?.details) {
@@ -68,11 +67,6 @@ export default function ApplicationPage() {
           Submit Your Details
         </Typography>
 
-        {success && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            Your form was submitted successfully!
-          </Alert>
-        )}
         {formError && <Alert severity="error" sx={{ mb: 2 }}>{formError}</Alert>}
 
         <form onSubmit={handleSubmit} noValidate>

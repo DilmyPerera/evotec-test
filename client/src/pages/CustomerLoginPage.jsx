@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Container,
   Paper,
   Typography,
   TextField,
@@ -8,9 +7,12 @@ import {
   Alert,
   Stack,
   Link,
+  Avatar,
 } from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import AuthLayout from '../components/AuthLayout.jsx';
 
 export default function CustomerLoginPage() {
   const { login } = useAuth();
@@ -39,11 +41,29 @@ export default function CustomerLoginPage() {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ mt: 8 }}>
-      <Paper elevation={2} sx={{ p: 4 }}>
-        <Typography variant="h5" gutterBottom fontWeight={600}>
-          Customer Login
-        </Typography>
+    <AuthLayout
+      eyebrow="Customer Portal"
+      title="Welcome back"
+      description="Log in to submit your details and keep track of your application with us."
+      features={[
+        'A quick, guided application form',
+        'Your submission is saved securely under your account',
+        'Protected by JWT-based authentication',
+      ]}
+      gradient="linear-gradient(135deg, #1a56db 0%, #1e3a8a 100%)"
+    >
+      <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 400, borderRadius: 3 }}>
+        <Stack spacing={1} sx={{ mb: 3 }}>
+          <Avatar sx={{ bgcolor: 'primary.main' }}>
+            <LoginIcon />
+          </Avatar>
+          <Typography variant="h5" fontWeight={700}>
+            Customer Login
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Enter your credentials to continue
+          </Typography>
+        </Stack>
 
         {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
@@ -65,16 +85,16 @@ export default function CustomerLoginPage() {
               required
               fullWidth
             />
-            <Button type="submit" variant="contained" disabled={submitting} fullWidth>
+            <Button type="submit" variant="contained" size="large" disabled={submitting} fullWidth>
               {submitting ? 'Logging in…' : 'Login'}
             </Button>
           </Stack>
         </form>
 
-        <Typography variant="body2" sx={{ mt: 2 }}>
+        <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
           No account yet? <Link component={RouterLink} to="/register">Register</Link>
         </Typography>
       </Paper>
-    </Container>
+    </AuthLayout>
   );
 }

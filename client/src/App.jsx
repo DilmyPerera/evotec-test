@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage.jsx';
 import CustomerRegisterPage from './pages/CustomerRegisterPage.jsx';
 import CustomerLoginPage from './pages/CustomerLoginPage.jsx';
 import ApplicationPage from './pages/ApplicationPage.jsx';
+import ApplicationSuccessPage from './pages/ApplicationSuccessPage.jsx';
 import AdminLoginPage from './pages/AdminLoginPage.jsx';
 import AdminDashboardPage from './pages/AdminDashboardPage.jsx';
 
@@ -22,6 +23,14 @@ export default function App() {
           element={
             <ProtectedRoute role="CUSTOMER">
               <ApplicationPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/application/success"
+          element={
+            <ProtectedRoute role="CUSTOMER">
+              <ApplicationSuccessPage />
             </ProtectedRoute>
           }
         />

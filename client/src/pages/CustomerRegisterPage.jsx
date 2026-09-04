@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Container,
   Paper,
   Typography,
   TextField,
@@ -8,9 +7,12 @@ import {
   Alert,
   Stack,
   Link,
+  Avatar,
 } from '@mui/material';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import AuthLayout from '../components/AuthLayout.jsx';
 
 export default function CustomerRegisterPage() {
   const { register } = useAuth();
@@ -52,11 +54,29 @@ export default function CustomerRegisterPage() {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ mt: 8 }}>
-      <Paper elevation={2} sx={{ p: 4 }}>
-        <Typography variant="h5" gutterBottom fontWeight={600}>
-          Customer Registration
-        </Typography>
+    <AuthLayout
+      eyebrow="Get Started"
+      title="Create your account"
+      description="Register as a customer to submit your details through a simple, guided form."
+      features={[
+        'Takes less than a minute to sign up',
+        'Update or track your submission any time',
+        'Your password is securely hashed, never stored in plain text',
+      ]}
+      gradient="linear-gradient(135deg, #1a56db 0%, #1e3a8a 100%)"
+    >
+      <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 400, borderRadius: 3 }}>
+        <Stack spacing={1} sx={{ mb: 3 }}>
+          <Avatar sx={{ bgcolor: 'primary.main' }}>
+            <PersonAddAltIcon />
+          </Avatar>
+          <Typography variant="h5" fontWeight={700}>
+            Customer Registration
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Create an account to get started
+          </Typography>
+        </Stack>
 
         {success && <Alert severity="success" sx={{ mb: 2 }}>Account created! Redirecting to login…</Alert>}
         {formError && <Alert severity="error" sx={{ mb: 2 }}>{formError}</Alert>}
@@ -93,16 +113,16 @@ export default function CustomerRegisterPage() {
               required
               fullWidth
             />
-            <Button type="submit" variant="contained" disabled={submitting} fullWidth>
+            <Button type="submit" variant="contained" size="large" disabled={submitting} fullWidth>
               {submitting ? 'Creating account…' : 'Register'}
             </Button>
           </Stack>
         </form>
 
-        <Typography variant="body2" sx={{ mt: 2 }}>
+        <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
           Already have an account? <Link component={RouterLink} to="/login">Log in</Link>
         </Typography>
       </Paper>
-    </Container>
+    </AuthLayout>
   );
 }
