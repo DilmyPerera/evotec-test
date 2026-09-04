@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import {
+  Box,
+  Container,
   Paper,
   Typography,
   TextField,
@@ -7,12 +9,9 @@ import {
   Alert,
   Stack,
   Link,
-  Avatar,
 } from '@mui/material';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import AuthLayout from '../components/AuthLayout.jsx';
 
 export default function CustomerRegisterPage() {
   const { register } = useAuth();
@@ -24,14 +23,46 @@ export default function CustomerRegisterPage() {
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = (field) => (e) => {
-    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  const setFieldError = (field, message) => {
+    setFieldErrors((prev) => ({ ...prev, [field]: message || undefined }));
+  };
+
+  const checkConfirmMatch = (password, confirmPassword) => {
+    if (!confirmPassword) {
+      setFieldError('confirmPassword', undefined);
+      return;
+    }
+    setFieldError('confirmPassword', confirmPassword === password ? undefined : 'Passwords do not match');
+  };
+
+  const handleEmailChange = (e) => {
+    setForm((prev) => ({ ...prev, email: e.target.value }));
+  };
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setForm((prev) => ({ ...prev, password: value }));
+    if (value.length === 0 || value.length >= 4) {
+      setFieldError('password', undefined);
+    }
+    checkConfirmMatch(value, form.confirmPassword);
+  };
+
+  const handlePasswordBlur = () => {
+    if (form.password.length > 0 && form.password.length < 4) {
+      setFieldError('password', 'Password must contain at least 4 characters');
+    }
+  };
+
+  const handleConfirmChange = (e) => {
+    const value = e.target.value;
+    setForm((prev) => ({ ...prev, confirmPassword: value }));
+    checkConfirmMatch(form.password, value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError('');
-    setFieldErrors({});
     setSubmitting(true);
     try {
       await register(form);
@@ -54,75 +85,63 @@ export default function CustomerRegisterPage() {
   };
 
   return (
-    <AuthLayout
-      eyebrow="Get Started"
-      title="Create your account"
-      description="Register as a customer to submit your details through a simple, guided form."
-      features={[
-        'Takes less than a minute to sign up',
-        'Update or track your submission any time',
-        'Your password is securely hashed, never stored in plain text',
-      ]}
-      gradient="linear-gradient(135deg, #1a56db 0%, #1e3a8a 100%)"
-    >
-      <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 400, borderRadius: 3 }}>
-        <Stack spacing={1} sx={{ mb: 3 }}>
-          <Avatar sx={{ bgcolor: 'primary.main' }}>
-            <PersonAddAltIcon />
-          </Avatar>
-          <Typography variant="h5" fontWeight={700}>
-            Customer Registration
+    <Box sx={{ minHeight: 'calc(100vh - 72px)', display: 'flex', alignItems: 'center', bgcolor: 'background.default', py: 4 }}>
+      <Container maxWidth="xs">
+        <Box sx={{ textAlign: 'center', mb: 3 }}>
+          <Typography variant="h5" fontWeight={700}>Create Your Account</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+            Register to access the application portal
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Create an account to get started
+        </Box>
+
+        <Paper variant="outlined" sx={{ p: 4, borderRadius: 3 }}>
+          {success && <Alert severity="success" sx={{ mb: 2 }}>Account created successfully. You can now log in.</Alert>}
+          {formError && <Alert severity="error" sx={{ mb: 2 }}>{formError}</Alert>}
+
+          <form onSubmit={handleSubmit} noValidate>
+            <Stack spacing={2.5}>
+              <TextField
+                label="Email"
+                type="email"
+                value={form.email}
+                onChange={handleEmailChange}
+                error={!!fieldErrors.email}
+                helperText={fieldErrors.email}
+                required
+                fullWidth
+              />
+              <TextField
+                label="Password"
+                type="password"
+                value={form.password}
+                onChange={handlePasswordChange}
+                onBlur={handlePasswordBlur}
+                error={!!fieldErrors.password}
+                helperText={fieldErrors.password || 'Password must contain at least 4 characters'}
+                required
+                fullWidth
+              />
+              <TextField
+                label="Confirm Password"
+                type="password"
+                value={form.confirmPassword}
+                onChange={handleConfirmChange}
+                error={!!fieldErrors.confirmPassword}
+                helperText={fieldErrors.confirmPassword}
+                required
+                fullWidth
+              />
+              <Button type="submit" variant="contained" size="large" disabled={submitting} fullWidth>
+                {submitting ? 'Creating account…' : 'Create Account'}
+              </Button>
+            </Stack>
+          </form>
+
+          <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+            Already have an account? <Link component={RouterLink} to="/login" fontWeight={600}>Login</Link>
           </Typography>
-        </Stack>
-
-        {success && <Alert severity="success" sx={{ mb: 2 }}>Account created! Redirecting to login…</Alert>}
-        {formError && <Alert severity="error" sx={{ mb: 2 }}>{formError}</Alert>}
-
-        <form onSubmit={handleSubmit} noValidate>
-          <Stack spacing={2}>
-            <TextField
-              label="Email"
-              type="email"
-              value={form.email}
-              onChange={handleChange('email')}
-              error={!!fieldErrors.email}
-              helperText={fieldErrors.email}
-              required
-              fullWidth
-            />
-            <TextField
-              label="Password"
-              type="password"
-              value={form.password}
-              onChange={handleChange('password')}
-              error={!!fieldErrors.password}
-              helperText={fieldErrors.password || 'Minimum 4 characters'}
-              required
-              fullWidth
-            />
-            <TextField
-              label="Confirm Password"
-              type="password"
-              value={form.confirmPassword}
-              onChange={handleChange('confirmPassword')}
-              error={!!fieldErrors.confirmPassword}
-              helperText={fieldErrors.confirmPassword}
-              required
-              fullWidth
-            />
-            <Button type="submit" variant="contained" size="large" disabled={submitting} fullWidth>
-              {submitting ? 'Creating account…' : 'Register'}
-            </Button>
-          </Stack>
-        </form>
-
-        <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-          Already have an account? <Link component={RouterLink} to="/login">Log in</Link>
-        </Typography>
-      </Paper>
-    </AuthLayout>
+        </Paper>
+      </Container>
+    </Box>
   );
 }

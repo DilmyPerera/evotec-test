@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import {
+  Box,
+  Container,
   Paper,
   Typography,
   TextField,
@@ -8,10 +10,10 @@ import {
   Stack,
   Avatar,
 } from '@mui/material';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import ShieldRoundedIcon from '@mui/icons-material/ShieldRounded';
+import LockRoundedIcon from '@mui/icons-material/LockRounded';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import AuthLayout from '../components/AuthLayout.jsx';
 
 export default function AdminLoginPage() {
   const { adminLogin } = useAuth();
@@ -33,63 +35,58 @@ export default function AdminLoginPage() {
       await adminLogin(form);
       navigate('/admin/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed. Please try again.');
+      setError(err.response?.data?.error || 'Invalid email or password');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <AuthLayout
-      eyebrow="Admin Portal"
-      title="Manage submissions with ease"
-      description="Log in to review, edit, filter, and manage every customer submission from one dashboard."
-      features={[
-        'Search and filter submissions instantly',
-        'Edit or remove records in a click',
-        'Restricted to authorized admin accounts only',
-      ]}
-      gradient="linear-gradient(135deg, #312e81 0%, #0f172a 100%)"
-    >
-      <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 400, borderRadius: 3 }}>
-        <Stack spacing={1} sx={{ mb: 3 }}>
-          <Avatar sx={{ bgcolor: '#312e81' }}>
-            <AdminPanelSettingsIcon />
+    <Box sx={{ minHeight: 'calc(100vh - 72px)', display: 'flex', alignItems: 'center', bgcolor: 'background.default' }}>
+      <Container maxWidth="xs">
+        <Box sx={{ textAlign: 'center', mb: 3 }}>
+          <Avatar sx={{ bgcolor: 'primary.main', mx: 'auto', mb: 1.5, width: 48, height: 48 }}>
+            <ShieldRoundedIcon />
           </Avatar>
-          <Typography variant="h5" fontWeight={700}>
-            Admin Login
+          <Typography variant="h5" fontWeight={700}>Administrator Portal</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+            Secure administrator access
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Restricted access — admins only
-          </Typography>
+        </Box>
+
+        <Paper variant="outlined" sx={{ p: 4, borderRadius: 3 }}>
+          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+
+          <form onSubmit={handleSubmit} noValidate>
+            <Stack spacing={2.5}>
+              <TextField
+                label="Admin Email"
+                type="email"
+                value={form.email}
+                onChange={handleChange('email')}
+                required
+                fullWidth
+              />
+              <TextField
+                label="Password"
+                type="password"
+                value={form.password}
+                onChange={handleChange('password')}
+                required
+                fullWidth
+              />
+              <Button type="submit" variant="contained" size="large" disabled={submitting} fullWidth>
+                {submitting ? 'Signing in…' : 'Admin Sign In'}
+              </Button>
+            </Stack>
+          </form>
+        </Paper>
+
+        <Stack direction="row" spacing={0.75} alignItems="center" justifyContent="center" sx={{ mt: 2.5, color: 'text.secondary' }}>
+          <LockRoundedIcon fontSize="small" />
+          <Typography variant="caption">Restricted Access</Typography>
         </Stack>
-
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-
-        <form onSubmit={handleSubmit} noValidate>
-          <Stack spacing={2}>
-            <TextField
-              label="Email"
-              type="email"
-              value={form.email}
-              onChange={handleChange('email')}
-              required
-              fullWidth
-            />
-            <TextField
-              label="Password"
-              type="password"
-              value={form.password}
-              onChange={handleChange('password')}
-              required
-              fullWidth
-            />
-            <Button type="submit" variant="contained" size="large" disabled={submitting} fullWidth sx={{ bgcolor: '#312e81', '&:hover': { bgcolor: '#252163' } }}>
-              {submitting ? 'Logging in…' : 'Login'}
-            </Button>
-          </Stack>
-        </form>
-      </Paper>
-    </AuthLayout>
+      </Container>
+    </Box>
   );
 }

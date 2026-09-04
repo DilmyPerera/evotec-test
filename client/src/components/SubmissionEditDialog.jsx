@@ -9,13 +9,15 @@ import {
   Button,
   Stack,
   Alert,
+  IconButton,
 } from '@mui/material';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 // Rendered with a `key` tied to the submission id (see AdminDashboardPage),
 // so this component remounts fresh whenever a different row is edited and
 // `form` always starts in sync with `submission`.
 export default function SubmissionEditDialog({ submission, onClose, onSave }) {
-  const [form, setForm] = useState(submission);
+  const [form, setForm] = useState(() => submission && { ...submission, feedback: submission.feedback ?? '' });
   const [fieldErrors, setFieldErrors] = useState({});
   const [formError, setFormError] = useState('');
   const [saving, setSaving] = useState(false);
@@ -51,7 +53,12 @@ export default function SubmissionEditDialog({ submission, onClose, onSave }) {
 
   return (
     <Dialog open onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Edit Submission</DialogTitle>
+      <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        Edit Application
+        <IconButton onClick={onClose} size="small" disabled={saving}>
+          <CloseRoundedIcon fontSize="small" />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
         {formError && <Alert severity="error" sx={{ mb: 2 }}>{formError}</Alert>}
         <Stack spacing={2} sx={{ mt: 1 }}>
@@ -125,7 +132,7 @@ export default function SubmissionEditDialog({ submission, onClose, onSave }) {
       <DialogActions>
         <Button onClick={onClose} disabled={saving}>Cancel</Button>
         <Button onClick={handleSave} variant="contained" disabled={saving}>
-          {saving ? 'Saving…' : 'Save'}
+          {saving ? 'Saving…' : 'Save Changes'}
         </Button>
       </DialogActions>
     </Dialog>

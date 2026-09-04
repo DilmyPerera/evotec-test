@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import {
+  Box,
+  Container,
   Paper,
   Typography,
   TextField,
@@ -7,18 +9,20 @@ import {
   Alert,
   Stack,
   Link,
-  Avatar,
+  IconButton,
+  InputAdornment,
 } from '@mui/material';
-import LoginIcon from '@mui/icons-material/Login';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
-import AuthLayout from '../components/AuthLayout.jsx';
 
 export default function CustomerLoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({ email: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -34,67 +38,63 @@ export default function CustomerLoginPage() {
       await login(form);
       navigate('/application');
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed. Please try again.');
+      setError(err.response?.data?.error || 'Invalid email or password');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <AuthLayout
-      eyebrow="Customer Portal"
-      title="Welcome back"
-      description="Log in to submit your details and keep track of your application with us."
-      features={[
-        'A quick, guided application form',
-        'Your submission is saved securely under your account',
-        'Protected by JWT-based authentication',
-      ]}
-      gradient="linear-gradient(135deg, #1a56db 0%, #1e3a8a 100%)"
-    >
-      <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 400, borderRadius: 3 }}>
-        <Stack spacing={1} sx={{ mb: 3 }}>
-          <Avatar sx={{ bgcolor: 'primary.main' }}>
-            <LoginIcon />
-          </Avatar>
-          <Typography variant="h5" fontWeight={700}>
-            Customer Login
+    <Box sx={{ minHeight: 'calc(100vh - 72px)', display: 'flex', alignItems: 'center', bgcolor: 'background.default' }}>
+      <Container maxWidth="xs">
+        <Box sx={{ textAlign: 'center', mb: 3 }}>
+          <Typography variant="h5" fontWeight={700}>Welcome Back</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+            Sign in to your account
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Enter your credentials to continue
+        </Box>
+
+        <Paper variant="outlined" sx={{ p: 4, borderRadius: 3 }}>
+          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+
+          <form onSubmit={handleSubmit} noValidate>
+            <Stack spacing={2.5}>
+              <TextField
+                label="Email"
+                type="email"
+                value={form.email}
+                onChange={handleChange('email')}
+                required
+                fullWidth
+              />
+              <TextField
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                value={form.password}
+                onChange={handleChange('password')}
+                required
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => setShowPassword((v) => !v)} edge="end" size="small">
+                        {showPassword ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Button type="submit" variant="contained" size="large" disabled={submitting} fullWidth>
+                {submitting ? 'Signing in…' : 'Sign In'}
+              </Button>
+            </Stack>
+          </form>
+
+          <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
+            Don&apos;t have an account? <Link component={RouterLink} to="/register" fontWeight={600}>Create Account</Link>
           </Typography>
-        </Stack>
-
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-
-        <form onSubmit={handleSubmit} noValidate>
-          <Stack spacing={2}>
-            <TextField
-              label="Email"
-              type="email"
-              value={form.email}
-              onChange={handleChange('email')}
-              required
-              fullWidth
-            />
-            <TextField
-              label="Password"
-              type="password"
-              value={form.password}
-              onChange={handleChange('password')}
-              required
-              fullWidth
-            />
-            <Button type="submit" variant="contained" size="large" disabled={submitting} fullWidth>
-              {submitting ? 'Logging in…' : 'Login'}
-            </Button>
-          </Stack>
-        </form>
-
-        <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
-          No account yet? <Link component={RouterLink} to="/register">Register</Link>
-        </Typography>
-      </Paper>
-    </AuthLayout>
+        </Paper>
+      </Container>
+    </Box>
   );
 }

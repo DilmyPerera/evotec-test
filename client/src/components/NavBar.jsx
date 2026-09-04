@@ -32,12 +32,11 @@ function NavLink({ to, children }) {
       component={RouterLink}
       to={to}
       sx={{
-        color: '#fff',
-        px: 2,
-        borderRadius: 2,
+        color: active ? 'primary.main' : 'text.primary',
+        px: 1.75,
         fontWeight: active ? 700 : 500,
-        bgcolor: active ? 'rgba(255,255,255,0.16)' : 'transparent',
-        '&:hover': { bgcolor: 'rgba(255,255,255,0.12)' },
+        bgcolor: active ? 'rgba(30,58,138,0.08)' : 'transparent',
+        '&:hover': { bgcolor: 'rgba(30,58,138,0.06)' },
       }}
     >
       {children}
@@ -54,13 +53,7 @@ function LoginMenu() {
       <Button
         onClick={(e) => setAnchorEl(e.currentTarget)}
         endIcon={<KeyboardArrowDownRoundedIcon />}
-        sx={{
-          color: '#fff',
-          px: 2,
-          borderRadius: 2,
-          fontWeight: 500,
-          '&:hover': { bgcolor: 'rgba(255,255,255,0.12)' },
-        }}
+        sx={{ color: 'text.primary', px: 1.75, fontWeight: 500 }}
       >
         Login
       </Button>
@@ -92,8 +85,10 @@ export default function NavBar() {
       position="sticky"
       elevation={0}
       sx={{
-        bgcolor: '#1e3a8a',
-        boxShadow: '0 2px 12px rgba(15, 23, 42, 0.25)',
+        bgcolor: 'background.paper',
+        color: 'text.primary',
+        borderBottom: '1px solid',
+        borderColor: 'divider',
       }}
     >
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', py: 1 }}>
@@ -105,29 +100,18 @@ export default function NavBar() {
           to="/"
           sx={{ color: 'inherit', textDecoration: 'none' }}
         >
-          <FactCheckRoundedIcon />
+          <FactCheckRoundedIcon color="primary" />
           <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 0.3 }}>
-            CFAMS
+            CAMS
           </Typography>
         </Stack>
 
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack direction="row" spacing={0.5} alignItems="center">
           {!user && (
             <>
+              <NavLink to="/">Home</NavLink>
               <LoginMenu />
-              <Button
-                component={RouterLink}
-                to="/register"
-                variant="contained"
-                sx={{
-                  ml: 1,
-                  bgcolor: '#fff',
-                  color: '#1e3a8a',
-                  fontWeight: 700,
-                  borderRadius: 2,
-                  '&:hover': { bgcolor: '#e5e9f5' },
-                }}
-              >
+              <Button component={RouterLink} to="/register" variant="contained" sx={{ ml: 1 }}>
                 Register
               </Button>
             </>
@@ -135,15 +119,16 @@ export default function NavBar() {
 
           {user && user.role === 'CUSTOMER' && (
             <>
+              <NavLink to="/">Home</NavLink>
               <NavLink to="/application">Application</NavLink>
-              <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.25)', my: 1 }} />
+              <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 1 }} />
               <Chip
-                icon={<PersonRoundedIcon sx={{ color: '#fff !important' }} />}
+                icon={<PersonRoundedIcon />}
                 label={user.email}
-                sx={{ color: '#fff', bgcolor: 'rgba(255,255,255,0.14)', fontWeight: 500 }}
+                sx={{ bgcolor: 'rgba(30,58,138,0.06)', fontWeight: 500 }}
               />
               <Tooltip title="Logout">
-                <IconButton onClick={handleLogout} sx={{ color: '#fff' }}>
+                <IconButton onClick={handleLogout} sx={{ color: 'text.secondary' }}>
                   <LogoutRoundedIcon />
                 </IconButton>
               </Tooltip>
@@ -153,14 +138,14 @@ export default function NavBar() {
           {user && user.role === 'ADMIN' && (
             <>
               <NavLink to="/admin/dashboard">Dashboard</NavLink>
-              <Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.25)', my: 1 }} />
+              <Divider orientation="vertical" flexItem sx={{ mx: 1, my: 1 }} />
               <Chip
-                icon={<PersonRoundedIcon sx={{ color: '#fff !important' }} />}
+                icon={<PersonRoundedIcon />}
                 label={user.email}
-                sx={{ color: '#fff', bgcolor: 'rgba(255,255,255,0.14)', fontWeight: 500 }}
+                sx={{ bgcolor: 'rgba(30,58,138,0.06)', fontWeight: 500 }}
               />
               <Tooltip title="Logout">
-                <IconButton onClick={handleLogout} sx={{ color: '#fff' }}>
+                <IconButton onClick={handleLogout} sx={{ color: 'text.secondary' }}>
                   <LogoutRoundedIcon />
                 </IconButton>
               </Tooltip>

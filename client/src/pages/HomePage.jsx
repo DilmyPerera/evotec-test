@@ -1,75 +1,56 @@
-import { Box, Container, Typography, Button, Stack, Grid, Paper, Avatar } from '@mui/material';
+import { Box, Container, Typography, Button, Stack, Grid, Divider } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import HowToRegIcon from '@mui/icons-material/HowToReg';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import LockPersonIcon from '@mui/icons-material/LockPerson';
+import LockRoundedIcon from '@mui/icons-material/LockRounded';
+import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
+import BoltRoundedIcon from '@mui/icons-material/BoltRounded';
 
-const FEATURES = [
-  {
-    icon: <HowToRegIcon />,
-    title: 'For Customers',
-    description: 'Register, log in, and submit your details through a simple guided form.',
-  },
-  {
-    icon: <AdminPanelSettingsIcon />,
-    title: 'For Admins',
-    description: 'Review, edit, filter, and manage every submission from one dashboard.',
-  },
-  {
-    icon: <LockPersonIcon />,
-    title: 'Secure by Design',
-    description: 'JWT authentication, role-based authorization, server-side validation, and secure password hashing protect every route.',
-  },
+const HIGHLIGHTS = [
+  { icon: <LockRoundedIcon color="primary" />, label: 'Secure Access' },
+  { icon: <DescriptionRoundedIcon color="primary" />, label: 'Easy Application' },
+  { icon: <BoltRoundedIcon color="primary" />, label: 'Fast Process' },
 ];
 
 export default function HomePage() {
   return (
-    <Box>
-      <Box
-        sx={{
-          background: 'linear-gradient(135deg, #1a56db 0%, #1e3a8a 100%)',
-          color: '#fff',
-          py: { xs: 8, md: 12 },
-        }}
-      >
-        <Container maxWidth="md" sx={{ textAlign: 'center' }}>
-          <Typography variant="overline" sx={{ letterSpacing: 3, opacity: 0.85, fontWeight: 600 }}>
-            CFAMS
-          </Typography>
-          <Typography variant="h3" fontWeight={700} sx={{ mt: 1, mb: 2, fontSize: { xs: '2rem', md: '2.75rem' } }}>
-            Customer Feedback &amp; Application Management System
-          </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.9, mb: 4, maxWidth: 640, mx: 'auto' }}>
-            A full-stack web application designed to manage customer registrations,
-            application submissions, and administrative operations through a secure
-            role-based system. Customers can register, authenticate, and submit
-            application forms, while administrators can securely manage, search,
-            filter, update, and delete submissions through an administrative dashboard.
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
-            <Button variant="contained" size="large" color="inherit" sx={{ color: '#1e3a8a', fontWeight: 600 }} component={RouterLink} to="/login">
-              Customer Login
-            </Button>
-            <Button variant="outlined" size="large" color="inherit" component={RouterLink} to="/admin/login">
-              Admin Login
-            </Button>
-          </Stack>
-        </Container>
-      </Box>
+    <Box sx={{ bgcolor: 'background.default', minHeight: 'calc(100vh - 72px)' }}>
+      <Container maxWidth="sm" sx={{ textAlign: 'center', pt: { xs: 7, md: 10 }, pb: { xs: 5, md: 6 } }}>
+        <Typography variant="h4" fontWeight={700} sx={{ mb: 2, fontSize: { xs: '1.75rem', md: '2.25rem' } }}>
+          Customer Application Management System
+        </Typography>
+        <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+          A secure and simple way to submit and manage your customer application.
+        </Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
+          <Button variant="contained" size="large" component={RouterLink} to="/register">
+            Apply Now
+          </Button>
+          <Button variant="outlined" size="large" component={RouterLink} to="/login">
+            Customer Login
+          </Button>
+        </Stack>
+      </Container>
 
-      <Container maxWidth="md" sx={{ py: { xs: 6, md: 8 } }}>
-        <Grid container spacing={3}>
-          {FEATURES.map((feature) => (
-            <Grid item xs={12} sm={4} key={feature.title}>
-              <Paper elevation={1} sx={{ p: 3, height: '100%', borderRadius: 3 }}>
-                <Avatar sx={{ bgcolor: 'primary.main', mb: 2 }}>{feature.icon}</Avatar>
-                <Typography variant="subtitle1" fontWeight={700} gutterBottom>
-                  {feature.title}
+      <Divider />
+
+      <Container maxWidth="sm" sx={{ py: { xs: 5, md: 6 } }}>
+        <Typography
+          variant="overline"
+          align="center"
+          display="block"
+          color="text.secondary"
+          sx={{ letterSpacing: 2, mb: 3 }}
+        >
+          Simple &bull; Secure &bull; Efficient
+        </Typography>
+        <Grid container spacing={3} justifyContent="center">
+          {HIGHLIGHTS.map((item) => (
+            <Grid item xs={12} sm={4} key={item.label}>
+              <Stack spacing={1} alignItems="center">
+                {item.icon}
+                <Typography variant="body2" fontWeight={600}>
+                  {item.label}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {feature.description}
-                </Typography>
-              </Paper>
+              </Stack>
             </Grid>
           ))}
         </Grid>

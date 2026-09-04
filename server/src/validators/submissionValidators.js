@@ -35,7 +35,7 @@ const updateSubmissionSchema = z.object({
     .regex(MOBILE_REGEX, 'Invalid mobile number format')
     .optional(),
   address: z.string().trim().min(1, 'Address is required').optional(),
-  feedback: z.string().trim().optional(),
+  feedback: z.string().trim().nullable().optional(),
 });
 
 module.exports = { createSubmissionSchema, updateSubmissionSchema };
