@@ -10,7 +10,7 @@ function required(name, fallback) {
 
 module.exports = {
   port: Number(process.env.PORT) || 4000,
-  clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',
   databaseUrl: required('DATABASE_URL'),
   jwt: {
     accessSecret: required('JWT_ACCESS_SECRET'),
