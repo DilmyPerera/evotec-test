@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -11,17 +11,14 @@ import {
   Alert,
 } from '@mui/material';
 
+// Rendered with a `key` tied to the submission id (see AdminDashboardPage),
+// so this component remounts fresh whenever a different row is edited and
+// `form` always starts in sync with `submission`.
 export default function SubmissionEditDialog({ submission, onClose, onSave }) {
   const [form, setForm] = useState(submission);
   const [fieldErrors, setFieldErrors] = useState({});
   const [formError, setFormError] = useState('');
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    setForm(submission);
-    setFieldErrors({});
-    setFormError('');
-  }, [submission]);
 
   if (!submission) return null;
 
