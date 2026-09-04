@@ -18,7 +18,7 @@ const FEATURES = [
   {
     icon: <LockPersonIcon />,
     title: 'Secure by Design',
-    description: 'JWT authentication and role-based access keep every route protected.',
+    description: 'JWT authentication, role-based authorization, server-side validation, and secure password hashing protect every route.',
   },
 ];
 
@@ -34,14 +34,17 @@ export default function HomePage() {
       >
         <Container maxWidth="md" sx={{ textAlign: 'center' }}>
           <Typography variant="overline" sx={{ letterSpacing: 3, opacity: 0.85, fontWeight: 600 }}>
-            Evotec Technical Assignment
+            CFAMS
           </Typography>
           <Typography variant="h3" fontWeight={700} sx={{ mt: 1, mb: 2, fontSize: { xs: '2rem', md: '2.75rem' } }}>
-            Submit and manage forms, simply and securely
+            Customer Feedback &amp; Application Management System
           </Typography>
-          <Typography variant="body1" sx={{ opacity: 0.9, mb: 4, maxWidth: 560, mx: 'auto' }}>
-            A full-stack form-submission system with customer and admin roles,
-            JWT authentication, and an admin dashboard with filtering and search.
+          <Typography variant="body1" sx={{ opacity: 0.9, mb: 4, maxWidth: 640, mx: 'auto' }}>
+            A full-stack web application designed to manage customer registrations,
+            application submissions, and administrative operations through a secure
+            role-based system. Customers can register, authenticate, and submit
+            application forms, while administrators can securely manage, search,
+            filter, update, and delete submissions through an administrative dashboard.
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
             <Button variant="contained" size="large" color="inherit" sx={{ color: '#1e3a8a', fontWeight: 600 }} component={RouterLink} to="/login">
