@@ -3,7 +3,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 export default function AuthLayout({ eyebrow, title, description, features = [], gradient, children }) {
   return (
-    <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 64px)', flexDirection: { xs: 'column', md: 'row' } }}>
+    <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 80px)', flexDirection: { xs: 'column', md: 'row' } }}>
       <Box
         sx={{
           flex: { xs: 'none', md: '0 0 44%' },

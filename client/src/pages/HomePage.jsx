@@ -44,13 +44,10 @@ export default function HomePage() {
             JWT authentication, and an admin dashboard with filtering and search.
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
-            <Button variant="contained" size="large" color="inherit" sx={{ color: '#1e3a8a', fontWeight: 600 }} component={RouterLink} to="/register">
-              Get Started
-            </Button>
-            <Button variant="outlined" size="large" color="inherit" component={RouterLink} to="/login">
+            <Button variant="contained" size="large" color="inherit" sx={{ color: '#1e3a8a', fontWeight: 600 }} component={RouterLink} to="/login">
               Customer Login
             </Button>
-            <Button variant="text" size="large" color="inherit" component={RouterLink} to="/admin/login">
+            <Button variant="outlined" size="large" color="inherit" component={RouterLink} to="/admin/login">
               Admin Login
             </Button>
           </Stack>
