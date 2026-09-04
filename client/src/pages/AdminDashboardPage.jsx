@@ -158,6 +158,7 @@ export default function AdminDashboardPage() {
       </Paper>
 
       <SubmissionEditDialog
+        key={editing?.id ?? 'closed'}
         submission={editing}
         onClose={() => setEditing(null)}
         onSave={handleSave}
