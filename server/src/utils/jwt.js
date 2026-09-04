@@ -2,15 +2,19 @@ const jwt = require('jsonwebtoken');
 const env = require('../config/env');
 
 function signAccessToken(user) {
-  return jwt.sign({ sub: user.id, role: user.role }, env.jwt.accessSecret, {
-    expiresIn: env.jwt.accessExpiresIn,
-  });
+  return jwt.sign(
+    { sub: user.id, role: user.role, email: user.email },
+    env.jwt.accessSecret,
+    { expiresIn: env.jwt.accessExpiresIn },
+  );
 }
 
 function signRefreshToken(user) {
-  return jwt.sign({ sub: user.id, role: user.role }, env.jwt.refreshSecret, {
-    expiresIn: env.jwt.refreshExpiresIn,
-  });
+  return jwt.sign(
+    { sub: user.id, role: user.role, email: user.email },
+    env.jwt.refreshSecret,
+    { expiresIn: env.jwt.refreshExpiresIn },
+  );
 }
 
 function verifyAccessToken(token) {
