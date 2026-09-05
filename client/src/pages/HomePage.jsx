@@ -15,17 +15,18 @@ export default function HomePage() {
     <Box sx={{ bgcolor: 'background.default', minHeight: 'calc(100vh - 72px)' }}>
       <Container maxWidth="sm" sx={{ textAlign: 'center', pt: { xs: 7, md: 10 }, pb: { xs: 5, md: 6 } }}>
         <Typography variant="h4" fontWeight={700} sx={{ mb: 2, fontSize: { xs: '1.75rem', md: '2.25rem' } }}>
-          Customer Application Management System
+          Submit and manage forms, simply.
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          A secure and simple way to submit and manage your customer application.
+          Customers register, sign in, and submit their details through a simple form. Admins
+          review, search, filter, and manage every submission from one dashboard.
         </Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
           <Button variant="contained" size="large" component={RouterLink} to="/register">
-            Apply Now
+            Get Started
           </Button>
           <Button variant="outlined" size="large" component={RouterLink} to="/login">
-            Customer Login
+            I already have an account
           </Button>
         </Stack>
       </Container>
