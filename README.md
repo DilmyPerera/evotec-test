@@ -49,7 +49,7 @@ and a PostgreSQL database.
 /postman_collection.json  Importable Postman collection covering all endpoints
 ```
 
-## Why the "special" files exist
+## Files
 
 These aren't part of the application's business logic, but each one solves a
 specific operational problem:
@@ -61,11 +61,6 @@ specific operational problem:
   would poll to decide whether to route traffic to / restart an instance -
   and it's useful manually when checking if the API started correctly
   (`curl localhost:4000/health`).
-- **`.env.example`** (in both `server/` and `client/`) - documents every
-  environment variable the app reads *without* committing real secrets
-  (JWT signing keys, DB credentials) to git. `.env` itself is git-ignored;
-  `.env.example` is the checked-in contract new developers (and CI) copy
-  from.
 - **`docker-compose.yml`** - pins a disposable, reproducible Postgres
   (`postgres:16-alpine`) with credentials that match `DATABASE_URL` in
   `server/.env.example`, so `docker compose up -d` is the entire "set up a
@@ -82,9 +77,7 @@ specific operational problem:
   requests (including auth flows) for manual API testing/exploration without
   needing to read the controller code to know what a request body looks
   like.
-- **`.gitignore`** (root, `server/`, `client/`) - excludes `node_modules`,
-  `.env`, and build output, so the repo stays small and no machine-specific
-  or secret state gets committed.
+
 
 ## Setup Instructions
 
