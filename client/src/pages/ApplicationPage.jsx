@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axiosClient from '../api/axiosClient';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const EMPTY_FORM = {
   firstName: '',
@@ -26,7 +27,8 @@ const EMPTY_FORM = {
 
 export default function ApplicationPage() {
   const navigate = useNavigate();
-  const [form, setForm] = useState(EMPTY_FORM);
+  const { user } = useAuth();
+  const [form, setForm] = useState(() => ({ ...EMPTY_FORM, email: user?.email || '' }));
   const [fieldErrors, setFieldErrors] = useState({});
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -110,9 +112,10 @@ export default function ApplicationPage() {
                   value={form.email}
                   onChange={handleChange('email')}
                   error={!!fieldErrors.email}
-                  helperText={fieldErrors.email}
+                  helperText={fieldErrors.email || 'From your account'}
                   required
                   fullWidth
+                  InputProps={{ readOnly: true }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
