@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: evotec
       POSTGRES_DB: evotec
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - evotec_postgres_data:/var/lib/postgresql/data
 
